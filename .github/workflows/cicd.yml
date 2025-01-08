@@ -12,11 +12,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build The Docker Image
-      run: docker build . --file Dockerfile --tag workflow-test:${{ github.sha }}
-
+      run: docker build . --file DockerFile --tag workflow-test:$(date +%s)
   build-and-test:
     runs-on: ubuntu-latest
-    needs: dockerbuild  # This job depends on dockerbuild
 
     steps:
     - name: Checkout code
@@ -38,7 +36,7 @@ jobs:
         pytest
 
   build-and-publish:
-    needs: build-and-test  # This job depends on build-and-test
+    needs: build-and-test
     runs-on: ubuntu-latest
 
     steps:
@@ -58,9 +56,9 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         context: .
-        file: ./Dockerfile
+        file: ./DockerFile
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/flasktest-app:${{ github.sha }}
+        tags: ${{ secrets.DOCKER_USERNAME }}/flasktest-app:latest
 
     - name: Image digest
-      run: echo "Image digest: ${{ steps.build-and-publish.outputs.digest }}"
+      run: echo ${{ steps.build-and-publish.outputs.digest }}
