@@ -58,7 +58,7 @@ jobs:
         context: .
         file: ./DockerFile
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.repository_name }}:latest
+        tags: mustafa5253/Github-Actions-implementation-Docker-:latest
 
     - name: Image digest
       run: echo ${{ steps.build-and-publish.outputs.digest }}
