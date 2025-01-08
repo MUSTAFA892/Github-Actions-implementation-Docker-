@@ -35,7 +35,7 @@ jobs:
       run: |
         pytest
 
-  build-and-publish:
+build-and-publish:
     needs: build-and-test
     runs-on: ubuntu-latest
 
@@ -58,8 +58,7 @@ jobs:
         context: .
         file: ./DockerFile
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}
+        tags: ${{ secrets.DOCKER_USERNAME }}/workflow-test:latest
 
     - name: Image digest
       run: echo ${{ steps.build-and-publish.outputs.digest }}
-
